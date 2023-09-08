@@ -1,30 +1,30 @@
 import fs from 'node:fs'; // build-in file system of node
-import path from 'node:path'; // build-in path system of node
 import axios from 'axios';
-import cheerio from 'cheerio';
-import puppeteer from 'puppeteer';
+import { parse } from 'node-html-parser';
 
 // create a new file through code
-fs.appendFile('memes', 'Learn Node FS module', function (err) {
-  if (err) throw err;
-  console.log('File is created successfully.');
-});
 
-// delete the second file, whatever: the appendFile created two files...
-fs.unlink('newfile_2.txt', function (err) {
-  if (err) throw err;
-  console.log('File deleted!');
-});
+const directoryPath = 'memes';
+// Check if the directory already exists
+if (!fs.existsSync(directoryPath)) {
+  // If it doesn't exist, create the directory
+  fs.mkdirSync(directoryPath);
+  console.log(`Directory '${directoryPath}' created successfully.`);
+} else {
+  console.log(`Directory '${directoryPath}' already exists.`);
+}
+
+const websiteUrl = 'https://memegen-link-examples-upleveled.netlify.app/';
 
 // Accessing the website, using the fetch method
-/*
-fetch('https://memegen-link-examples-upleveled.netlify.app/')
+
+fetch(websiteUrl)
   .then((response) => response.text())
   .then((data) => console.log(data))
   .catch((error) => console.log(error));
-*/
 
-// accessing the page through axios
+/* accessing the page through axios
+
 axios
   .get('https://memegen-link-examples-upleveled.netlify.app/')
   .then(function (response) {
@@ -35,7 +35,11 @@ axios
   })
   .finally(function () {});
 
-/*
-const $ = cheerio.load('<div>...</div>', null, false); // even <section id="images"...> not work to filter the elements. Still showing the whole html code
-$.html(); // run the function
+/* MY VERSION: seems not to work, the function is not filtering the html code
+
+const $ = cheerio.load(
+  '<img src="https://api.memegen.link/images/bad/your_meme_is_bad/and_you_should_feel_bad.jpg?width=300">...</img>',
+);
+
+$.html();
 */
